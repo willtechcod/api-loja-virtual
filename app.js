@@ -140,23 +140,24 @@ app.post('/login', async (req, res) => {
 });
 
 //Aqui inicia o CRUD do Produto
-app.get('/produto', async function (req, res) {
-    await Produto.findAll({order:[['id', 'DESC']]})
-    .then(function(produtos){
-        return res.json({
-            erro: false,
-            produtos
-        });
-    }).catch(function(){
-        return res.json({
-            erro: true,
-            messagem: "Erro: Nenhum produto encontrado!"
-        });
-    });
+app.get('/prod',eAdmin, async (req, res) =>{
+  await Produto.findAll({order:[['id', 'DESC']]})
+  .then(function(produtos){
+      return res.json({
+          erro: false,
+          produtos
+      });
+  }).catch(function(){
+      return res.json({
+          erro: true,
+          messagem: "Erro: Nenhum produto encontrado!"
+      });
+  });
 });
 
 
-app.get('/produto/:id', async (req, res) => {
+
+app.get('/prod/:id',eAdmin, async (req, res) => {
     await Produto.findByPk(req.params.id)
       .then(produtos => {
         if(produtos.img){
@@ -178,7 +179,7 @@ app.get('/produto/:id', async (req, res) => {
       });
   });
 
-  app.post('/cad_prod', async function (req, res) {
+  app.post('/cad_prod',eAdmin, async function (req, res) {
 
     const resultCad = await Produto.create(
       req.body
@@ -196,7 +197,7 @@ app.get('/produto/:id', async (req, res) => {
   });
 
 
-  app.put('/edit_prod', async (req, res) => {
+  app.put('/edit_prod',eAdmin, async (req, res) => {
     await Produto.update(req.body, {
       where: { id: req.body.id }
     }).then(function () {
@@ -251,7 +252,7 @@ app.get('/produto/:id', async (req, res) => {
     }
   })
  
-  app.delete('/apagar_prod/:id', async (req, res) => {
+  app.delete('/apagar_prod/:id',eAdmin, async (req, res) => {
     await Produto.destroy({
       where: { id: req.params.id }
     }).then(function () {
